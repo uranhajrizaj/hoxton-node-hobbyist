@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db"
+}
+
+model Peoples {
+  id      Int       @id @default(autoincrement())
+  name    String
+  picture String
+  email   String
+  hobbies Hobbies[]
+}
+
+model Hobbies {
+  id        Int     @id @default(autoincrement())
+  name      String
+  image     String
+  active    Boolean
+  people    Peoples @relation(fields: [peoplesId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  peoplesId Int
+}
