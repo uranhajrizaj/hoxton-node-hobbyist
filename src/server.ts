@@ -38,6 +38,7 @@ app.patch("/peoples/:id", async (req, res) => {
   const updatedPeople = await prisma.peoples.update({
     where: { id },
     data: req.body,
+    include:{hobbies:true}
   });
   res.send(updatedPeople);
 });
@@ -76,6 +77,7 @@ app.patch("/hobbies/:id", async (req, res) => {
   const updatedHobby = await prisma.hobbies.update({
     where: { id },
     data: req.body,
+    include:{people:true}
   });
   res.send(updatedHobby);
 });
