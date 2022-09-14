@@ -36,51 +36,51 @@ app.get("/people/:id", async (req, res) => {
 });
 
 app.post("/people", async (req, res) => {
-  const newPerson={
+  const newPerson = {
     name: req.body.name,
-    email:req.body.email,
-    picture:req.body.picture,
-    hobbies: req.body.hobbies?req.body.hobbies:[]
-  }
+    email: req.body.email,
+    picture: req.body.picture,
+    hobbies: req.body.hobbies ? req.body.hobbies : [],
+  };
   const newpeople = await prisma.people.create({
     data: {
       name: newPerson.name,
       email: newPerson.email,
       picture: newPerson.picture,
-      hobbies:{
-        connectOrCreate: newPerson.hobbies.map((hobby:String)=>({
+      hobbies: {
+        connectOrCreate: newPerson.hobbies.map((hobby: String) => ({
           where: { name: hobby },
-          create: { name: hobby }
-        }))
+          create: { name: hobby },
+        })),
       },
-      },
-    include: {hobbies:true}  
+    },
+    include: { hobbies: true },
   });
   res.send(newpeople);
 });
 
 app.patch("/people/:id", async (req, res) => {
-  const id=Number(req.params.id)
-  const updatePerson={
+  const id = Number(req.params.id);
+  const updatePerson = {
     name: req.body.name,
-    email:req.body.email,
-    picture:req.body.picture,
-    hobbies: req.body.hobbies?req.body.hobbies:[]
-  }
+    email: req.body.email,
+    picture: req.body.picture,
+    hobbies: req.body.hobbies ? req.body.hobbies : [],
+  };
   const updated = await prisma.people.update({
-    where:{id},
+    where: { id },
     data: {
       name: updatePerson.name,
       email: updatePerson.email,
       picture: updatePerson.picture,
-      hobbies:{
-        connectOrCreate: updatePerson.hobbies.map((hobby:String)=>({
+      hobbies: {
+        connectOrCreate: updatePerson.hobbies.map((hobby: String) => ({
           where: { name: hobby },
-          create: { name: hobby }
-        }))
+          create: { name: hobby },
+        })),
       },
-      },
-    include: {hobbies:true}  
+    },
+    include: { hobbies: true },
   });
   res.send(updated);
 });
@@ -89,8 +89,7 @@ app.delete("/people/:id", async (req, res) => {
   const id = Number(req.params.id);
   const deletedPeople = await prisma.people.delete({ where: { id } });
   res.send(deletedPeople);
-})
-
+});
 
 app.get("/hobbies", async (req, res) => {
   const hobbies = await prisma.hobbies.findMany({ include: { people: true } });
@@ -108,51 +107,51 @@ app.get("/hobbies/:id", async (req, res) => {
 });
 
 app.post("/hobbies", async (req, res) => {
-  const newHobby={
+  const newHobby = {
     name: req.body.name,
-    image:req.body.image,
+    image: req.body.image,
     active: req.body.active,
-    people: req.body.people?req.body.people:[]
-  }
+    people: req.body.people ? req.body.people : [],
+  };
   const newData = await prisma.hobbies.create({
     data: {
       name: newHobby.name,
       image: newHobby.image,
       active: newHobby.active,
-      people:{
-        connectOrCreate: newHobby.people.map((person:String)=>({
+      people: {
+        connectOrCreate: newHobby.people.map((person: String) => ({
           where: { name: person },
-          create: { name: person }
-        }))
+          create: { name: person },
+        })),
       },
-      },
-    include: {people:true}  
+    },
+    include: { people: true },
   });
   res.send(newData);
 });
 
 app.patch("/hobbies/:id", async (req, res) => {
-  const id=Number(req.params.id)
-  const updateHobby={
+  const id = Number(req.params.id);
+  const updateHobby = {
     name: req.body.name,
-    image:req.body.image,
+    image: req.body.image,
     active: req.body.active,
-    people: req.body.people?req.body.people:[]
-  }
+    people: req.body.people ? req.body.people : [],
+  };
   const newData = await prisma.hobbies.update({
-    where: {id},
+    where: { id },
     data: {
       name: updateHobby.name,
       image: updateHobby.image,
       active: updateHobby.active,
-      people:{
-        connectOrCreate: updateHobby.people.map((person:String)=>({
+      people: {
+        connectOrCreate: updateHobby.people.map((person: String) => ({
           where: { name: person },
-          create: { name: person }
-        }))
+          create: { name: person },
+        })),
       },
-      },
-    include: {people:true}  
+    },
+    include: { people: true },
   });
   res.send(newData);
 });
